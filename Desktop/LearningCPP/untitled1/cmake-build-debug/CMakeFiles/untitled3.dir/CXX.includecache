@@ -6,11 +6,17 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/abfaz/Desktop/LearningCPP/untitled1/main.cpp
+C:/Users/abfaz/Desktop/LearningCPP/untitled3/main.cpp
 iostream
 -
 vector
 -
 string
+-
+cmath
+-
+algorithm
+-
+ctime
 -
 
