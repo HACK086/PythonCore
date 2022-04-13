@@ -6,3 +6,4 @@
   - [***Loan Calculator***](https://github.com/HACK086/PythonCore/blob/main/Loan%20Calculator/Loan%20Calculator.py)
   - [***Honest Calculator***](https://github.com/HACK086/PythonCore/blob/main/Honest%20Calculator/Honest%20Calculator.py)
   - [***Bill Splitter***](https://github.com/HACK086/PythonCore/blob/main/Bill%20Splitter/main.py)
+  - [***Rock-Paper-Scissors***](https://github.com/HACK086/PythonCore/blob/main/Rock-Paper-Scissors/main.py)
