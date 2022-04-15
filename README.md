@@ -8,3 +8,6 @@
   - [***Bill Splitter***](https://github.com/HACK086/PythonCore/blob/main/Bill%20Splitter/main.py)
   - [***Rock-Paper-Scissors***](https://github.com/HACK086/PythonCore/blob/main/Rock-Paper-Scissors/main.py)
   - [***Hangman***](https://github.com/HACK086/PythonCore/blob/main/Hangman/main.py)
+  - [***Coffee Machine***](https://github.com/HACK086/PythonCore/blob/main/Coffee%20Machine/main.py)
+
+
