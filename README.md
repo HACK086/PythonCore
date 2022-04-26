@@ -13,3 +13,5 @@
   - [***Arithmetic Exam Application***](https://github.com/HACK086/PythonCore/blob/main/Arithmetic%20Exam%20Application/main.py)
   - [***Currency Converter***](https://github.com/HACK086/PythonCore/blob/main/Currency%20Converter/main.py)
   - [***Create Glowing Bacteria***](https://github.com/HACK086/PythonCore/blob/main/Create%20Glowing%20Bacteria/main.py)
+  - [***Markdown Editor***](https://github.com/HACK086/PythonCore/blob/main/Markdown%20Editor/main.py)
+
