@@ -15,4 +15,5 @@
   - [***Create Glowing Bacteria***](https://github.com/HACK086/PythonCore/blob/main/Create%20Glowing%20Bacteria/main.py)
   - [***Markdown Editor***](https://github.com/HACK086/PythonCore/blob/main/Markdown%20Editor/main.py)
   - [***University Admission Procedure***](https://github.com/HACK086/PythonCore/blob/main/University%20Admission%20Procedure/main.py)
+  - [***Dominoes***](https://github.com/HACK086/PythonCore/blob/main/Dominoes/main.py)
 
