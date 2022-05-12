@@ -17,3 +17,4 @@
   - [***University Admission Procedure***](https://github.com/HACK086/PythonCore/blob/main/University%20Admission%20Procedure/main.py)
   - [***Dominoes***](https://github.com/HACK086/PythonCore/blob/main/Dominoes/main.py)
   - [***Text Generator***](https://github.com/HACK086/PythonCore/blob/main/Text%20Generator/main.py)
+  - [***Web Scraper***](https://github.com/HACK086/PythonCore/blob/main/Web%20Scraper/main.py)
