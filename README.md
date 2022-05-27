@@ -18,3 +18,5 @@
   - [***Dominoes***](https://github.com/HACK086/PythonCore/blob/main/Dominoes/main.py)
   - [***Text Generator***](https://github.com/HACK086/PythonCore/blob/main/Text%20Generator/main.py)
   - [***Web Scraper***](https://github.com/HACK086/PythonCore/blob/main/Web%20Scraper/main.py)
+  - [***Regex Engine***](https://github.com/HACK086/PythonCore/blob/main/Regex%20Engine/main.py)
+  - [***Duplicate File Handler***](https://github.com/HACK086/PythonCore/blob/main/Duplicate%20File%20Handler/main.py)
