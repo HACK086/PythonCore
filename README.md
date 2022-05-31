@@ -22,4 +22,5 @@
   - [***Duplicate File Handler***](https://github.com/HACK086/PythonCore/blob/main/Duplicate%20File%20Handler/main.py)
   - [***Easy Rider Bus Company***](https://github.com/HACK086/PythonCore/blob/main/Easy%20Rider%20Bus%20Company/main.py)
   - [***Smart Calculator***](https://github.com/HACK086/PythonCore/blob/main/Smart%20Calculator/main.py)
+  - [***Robogotchi***](https://github.com/HACK086/PythonCore/blob/main/Robogotchi/main.py)
 
