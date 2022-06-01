@@ -1,4 +1,5 @@
 import random
+#Why there are no comments in the code?
 print('Which game would you like to play?')
 game = input().lower()
 while True:
@@ -42,7 +43,7 @@ Draws: {Draws}.""")
         except:
             print("A string is not a valid input!")
 elif game == 'rock-paper-scissors':
-    robotlistcount = 0
+    robotlistcount = 5
     drawscount = 0
     yourcount = 0
     while True:
