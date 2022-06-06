@@ -1,74 +1,78 @@
+import argparse
 import os
-import sys
+from collections import deque
+import requests
+from bs4 import BeautifulSoup
+from colorama import init, Fore
+
+init(autoreset=True)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('file', help='directory name')
+args = parser.parse_args()
+path = args.file
+if os.access(path, os.F_OK):
+    pass
+else:
+    os.mkdir(path)
+
+stack = deque()
+last_website = None
 
 
-nytimes_com = '''
-This New Liquid Is Magnetic, and Mesmerizing
-
-Scientists have created "soft" magnets that can flow 
-and change shape, and that could be a boon to medicine 
-and robotics. (Source: New York Times)
-
-
-Most Wikipedia Profiles Are of Men. This Scientist Is Changing That.
-
-Jessica Wade has added nearly 700 Wikipedia biographies for
- important female and minority scientists in less than two 
- years.
-
-'''
-
-bloomberg_com = '''
-The Space Race: From Apollo 11 to Elon Musk
-
-It's 50 years since the world was gripped by historic images
- of Apollo 11, and Neil Armstrong -- the first man to walk 
- on the moon. It was the height of the Cold War, and the charts
- were filled with David Bowie's Space Oddity, and Creedence's 
- Bad Moon Rising. The world is a very different place than 
- it was 5 decades ago. But how has the space race changed since
- the summer of '69? (Source: Bloomberg)
-
-
-Twitter CEO Jack Dorsey Gives Talk at Apple Headquarters
-
-Twitter and Square Chief Executive Officer Jack Dorsey 
- addressed Apple Inc. employees at the iPhone maker’s headquarters
- Tuesday, a signal of the strong ties between the Silicon Valley giants.
-'''
-
-
-# write your code here
-def main():
-    count = 0
-    args = sys.argv
-    directory = args[1]
-    if not os.access(directory, mode=os.F_OK):
-        os.mkdir(directory)
-    while True:
-        user_inp = input()
-        if user_inp == "nytimes.com":
-            print(nytimes_com)
-            count = 1
-            with open(f"{directory}/nytimes", 'w', encoding='utf-8') as file:
-                file.write(nytimes_com)
-        elif user_inp == "bloomberg.com":
-            print(bloomberg_com)
-            count = 2
-            with open(f"{directory}/bloomberg", 'w', encoding='utf-8') as file:
-                file.write(bloomberg_com)
-        elif user_inp == "exit":
-            break
-        elif user_inp == 'back':
-            if count == 1:
-                print(bloomberg_com)
+def previous_website():
+    if len(stack) > 1:
+        for _ in range(2):
+            if last_website != stack[-1]:
+                read_websites(stack.pop())
             else:
-                print(nytimes_com)
-        else:
-            print("Error")
-    if not bool(os.listdir(directory)):
-        os.rmdir(directory)
+                stack.pop()
 
 
-if __name__ == "__main__":
-    main()
+def read_websites(web):
+    with open(f'{path + "/" + web}', 'r') as f:
+        print(f.read())
+
+
+def save_website(web, text):
+    with open(f'{path + "/" + web}', 'w', encoding='UTF-8') as f:
+        f.write(text)
+
+
+def read_html(r):
+    soup = BeautifulSoup(r.content, 'html.parser')
+    tags = ['p', 'a', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+    output = ''
+    for t in soup.body.descendants:
+        if t.name == 'a':
+            output += Fore.BLUE + t.get_text()
+        elif t.name in tags:
+            output += t.get_text()
+
+    save_website(web_input, output)
+    print(output)
+
+search = True
+while search:
+    web_input = input().strip().lower()
+    if web_input == 'exit':
+        search = False
+        break
+    elif web_input == 'back':
+        previous_website()
+        continue
+    websites = os.listdir(path)
+    for i in websites:
+        if web_input == i:
+           read_websites(web_input)
+           continue
+    if web_input[-4] != '.':
+        print('Incorrect URL')
+        continue
+    if web_input[:7] == 'https://':
+        r = requests.get(web_input)
+    else:
+        r = requests.get('https://' + web_input)
+    read_html(r)
+    stack.append(web_input[:-4])
+    last_website = web_input[:-4]
