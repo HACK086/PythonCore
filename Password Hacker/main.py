@@ -1,44 +1,136 @@
-import argparse
-import socket
 import itertools
+import sys
+import socket
+import json
 import string
+import datetime
+import time
 
 
-def generate_password():
-    base_list = string.ascii_lowercase + string.digits
-    for n in range(1, 5):
-        for letters in itertools.product(base_list, repeat=n):
-            yield "".join(letters)
+def is_string(o):
+    if isinstance(o, (float, int)):
+        return False
+
+    return isinstance(o, str)
 
 
-class Connect2Server:
+def is_number(o):
+    try:
+        return isinstance(int(float(o)), (float, int))
+    except ValueError:
+        return False
 
-    def __init__(self):
-        self.description = "Let's connect to a server."
-        self.ip_help = "IP address of the server."
-        self.port_help = "Connection port."
-        self.message_help = "Message sent to server."
-        self.parser = None
-        self.args = None
-        self.password_generator = generate_password()
-        self.password = None
 
-    def connect(self):
-        self.parser = argparse.ArgumentParser(description=self.description)
-        self.parser.add_argument('ip_address', help=self.ip_help)
-        self.parser.add_argument('port', help=self.port_help)
-        self.args = self.parser.parse_args()
+def get_pwd_lst(file_name):
+    try:
+        with open(file_name, 'r', encoding='utf-8') as pwd_file:
+            data = pwd_file.read()
+            # replacing end splitting the text
+            # when newline ('\n') is seen.
+    except EOFError:
+        return None
+    except FileNotFoundError:
+        return None
+    else:
+        pwd_lst = data.split("\n")
+        return pwd_lst
 
+
+def get_password():
+    while True:
+        for letter in ' ' + string.ascii_letters + string.digits:
+            yield letter
+
+
+def password_generator(length):
+    for m in itertools.product(itertools.chain(range(65, 91), range(97, 123), range(48, 58)), repeat=length):
+        yield ''.join(map(chr, iter(m)))
+
+
+def parse_result(data) -> str:
+    return json.loads(data)["result"]
+
+
+def run_socket(local_host, port_num):
+    word_lst = get_pwd_lst("logins.txt")
+
+    if word_lst:
         with socket.socket() as client_socket:
-            client_socket.connect((self.args.ip_address, int(self.args.port)))
-            correct_response = 'Connection success!'
-            response = ""
-            while response != correct_response:
-                self.password = next(self.password_generator)
-                client_socket.send(self.password.encode())
-                response = client_socket.recv(1024).decode()
-            print(self.password)
+            address = (local_host, port_num)
+            client_socket.connect(address)
+            login = {"login": "", "password": ""}
+            users = get_pwd_lst("logins.txt")
+            for user in users:
+                login['login'] = user
+                client_socket.send(json.dumps(login).encode())
+                response = client_socket.recv(1024)
+                message = json.loads(response.decode())
+                if message['result'] != 'Wrong login!':
+                    break
+
+            password = ""
+            run = True
+
+            while run:
+                for character in password_generator(1):
+                    ends_at = time.time() + .05
+                    login['password'] = password + character
+                    client_socket.send(json.dumps(login).encode())
+                    response = client_socket.recv(1024)
+                    message = json.loads(response.decode())
+                    if message['result'] != 'Wrong password!' or time.time() > ends_at:
+                        password += character
+                        break
+
+                if message['result'] == 'Connection success!':
+                    print(json.dumps(login))
+                    run = False
+    else:
+        print('Error reading file!')
+
+
+def read_args(lst):
+    valid = True
+    program_name = 2
+    cfg_params_lst = [program_name, 0, 1, 0]
+    for arg in range(1, len(lst)):  
+        if cfg_params_lst[arg]:
+            if is_number(lst[arg]):
+                valid = valid + True
+            else:
+                return False
+        else:
+            if is_string(lst[arg]):
+                valid = valid + True
+            else:
+                return False
+    return valid
+
+
+def auto():
+    while True:
+        in_put = input()
+        if in_put:
+            in_put = in_put.split(' ')
+            in_put.insert(0, '0')
+            if read_args(in_put):
+                run_socket(in_put[1], int(in_put[2]))
+            else:
+                sys.exit(0)
+        else:
+            break
+
+
+def cli():
+    if read_args(sys.argv):
+        run_socket(sys.argv[1], int(sys.argv[2]))
+    else:
+        sys.exit(0)
 
 
 if __name__ == '__main__':
-    Connect2Server().connect()
+    is_test = False
+    if is_test:
+        auto()
+    else:
+        cli()
