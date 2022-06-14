@@ -1,5 +1,4 @@
 import random
-<<<<<<< HEAD
 
 
 class NegativeNumberError(Exception):
@@ -154,22 +153,6 @@ def main():
 
 
 def play_game():
-=======
-#Why there are no comments in the code?
-print('Which game would you like to play?')
-game = input().lower()
-while True:
-    if game == 'numbers' or game == "rock-paper-scissors":
-        break
-    else:
-        print('Please choose a valid option: Numbers or Rock-paper-scissors?')
-        game = input().lower()
-if game == 'numbers':
-    goal = random.randint(0, 1000000)
-    robotcount = 0
-    acount = 0
-    Draws = 0
->>>>>>> 34f2467f994838cde470a081872a06b6f547db5b
     while True:
         try:
             print('Which game would you like to play?')
@@ -180,7 +163,6 @@ if game == 'numbers':
             elif user_input == 'Rock-paper-scissors':
                 play_rps()
             else:
-<<<<<<< HEAD
                 raise InvalidGameError
         except InvalidGameError as err:
             print(err)
@@ -191,26 +173,7 @@ def play_rps():
                'scissors': {'wins': 'paper', 'loses': 'rock'},
                'paper': {'wins': 'rock', 'loses': 'scissors'}}
 
-=======
-                robot = random.randint(0,1000000)
-                print(f"The robot entered the number {robot}.")
-                print(f"The goal number is {goal}.")
-                if abs(goal - robot) < abs(goal - a):
-                    print(f"The robot won!")
-                    robotcount += 1
-                elif abs(goal - robot) > abs(goal - a):
-                    print(f"You won!")
-                    acount += 1
-                else:
-                    print("It's a draw!")
-                    Draws += 1
-        except:
-            print("A string is not a valid input!")
-elif game == 'rock-paper-scissors':
-    robotlistcount = 5
-    drawscount = 0
-    yourcount = 0
->>>>>>> 34f2467f994838cde470a081872a06b6f547db5b
+
     while True:
         print('\nWhat is your move?')
         user_input = input()
