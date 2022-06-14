@@ -23,6 +23,8 @@
   - [***Easy Rider Bus Company***](https://github.com/HACK086/PythonCore/blob/main/Easy%20Rider%20Bus%20Company/main.py)
   - [***Smart Calculator***](https://github.com/HACK086/PythonCore/blob/main/Smart%20Calculator/main.py)
   - [***Robogotchi***](https://github.com/HACK086/PythonCore/blob/main/Robogotchi/main.py)
-  - [***Smart Calculator***](https://github.com/HACK086/PythonCore/blob/main/Text-Based%20 Browser/main.py)
+  - [***Smart Calculator***](https://github.com/HACK086/PythonCore/blob/main/Text-Based%20Browser/main.py)
+  - [***Knight's Tour Puzzle***](https://github.com/HACK086/PythonCore/blob/main/Knight's%20Tour%20Puzzle/main.py)
+
 
 
