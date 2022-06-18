@@ -25,6 +25,7 @@
   - [***Robogotchi***](https://github.com/HACK086/PythonCore/blob/main/Robogotchi/main.py)
   - [***Smart Calculator***](https://github.com/HACK086/PythonCore/blob/main/Text-Based%20Browser/main.py)
   - [***Knight's Tour Puzzle***](https://github.com/HACK086/PythonCore/blob/main/Knight's%20Tour%20Puzzle/main.py)
+  - [***Flashcards***](https://github.com/HACK086/PythonCore/blob/main/Flashcards/main.py)
 
 
 
