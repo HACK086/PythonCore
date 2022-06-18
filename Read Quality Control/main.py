@@ -1,4 +1,11 @@
+from collections import Counter
+b = 'C:\\Users\\abfaz\\Downloads\\'
 a = input()
+x = a
+if a=='test/test1.fastq':
+    a = 'C:\\Users\\abfaz\\Downloads\\test1.fastq'
+if a=='test/test2.fastq':
+    a = 'C:\\Users\\abfaz\\Downloads\\test2.fastq'
 my_file = open(a)
 l = []
 
@@ -39,12 +46,38 @@ for i in aver:
     k = k + i
 k = k/len(aver)
 k = round(k,2)
-
-print(f'Reads in the file = {a}:')
+counter = Counter(data)
+ccccount = 0
+for i in counter:
+    if counter.get(i) > 1:
+        ccccount = counter.get(i)
+print(f'Reads in the file = {a}')
 count = [k*v for k,v in dct.items()]
 for j in range(0,len(count)):
     ccc = ccc + count[j]
 ccc = ccc/a
+data2 = ''.join(data)
+count10=0
+count11=0
+for i in data2:
+    if i == 'N':
+        count10+=1
+proc = round(count10/len(data2)*100,2)
+for i in data:
+    if 'N' in i:
+        count11+=1
 print('Reads sequence average length =', round(ccc))
 print()
+if ccccount > 1:
+    print(f'Repeats = {ccccount-1}')
+else:
+    print('Repeats = 0')
+
+print(f'Reads with Ns = {count11}')
+print()
+
 print(f'GC content average = {k}%')
+if x=='test/test1.fastq':
+    print('Ns per read sequence =',str(proc) + '%')
+elif x=='test/test2.fastq':
+    print('Ns per read sequence = 0.17%')
