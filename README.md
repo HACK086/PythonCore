@@ -27,5 +27,7 @@
   - [***Knight's Tour Puzzle***](https://github.com/HACK086/PythonCore/blob/main/Knight's%20Tour%20Puzzle/main.py)
   - [***Flashcards***](https://github.com/HACK086/PythonCore/blob/main/Flashcards/main.py)
   - [***Multilingual Online Translator***](https://github.com/HACK086/PythonCore/blob/main/Multilingual%20Online%20Translator/main.py)
+  - [***Key Terms Extraction***](https://github.com/HACK086/PythonCore/blob/main/Key%20Terms%20Extraction/main.py)
+
 
 
