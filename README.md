@@ -28,6 +28,8 @@
   - [***Flashcards***](https://github.com/HACK086/PythonCore/blob/main/Flashcards/main.py)
   - [***Multilingual Online Translator***](https://github.com/HACK086/PythonCore/blob/main/Multilingual%20Online%20Translator/main.py)
   - [***Key Terms Extraction***](https://github.com/HACK086/PythonCore/blob/main/Key%20Terms%20Extraction/main.py)
+  - [***Static Code Analyzer***](https://github.com/HACK086/PythonCore/blob/main/Static%20Code%20Analyzer/main.py)
+
 
 
 
