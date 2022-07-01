@@ -1,3 +1,0 @@
-CMakeLists
-cmake-build-debug/
-.idea/
