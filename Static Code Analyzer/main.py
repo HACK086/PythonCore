@@ -1,97 +1,71 @@
-import sys
+import ast
 import os
-import re
-# write your code here
-errors = {"S001": "Too long",
-          "S002": "Indentation is not a multiple of four",
-          "S003": "Unnecessary semicolon after a statement",
-          "S004": "At least two spaces required before inline comments",
-          "S005": "TODO found",
-          "S006": "More than two blank lines preceding a code line",
-          "S007": "Too many spaces after '{construc}'",
-          "S008": "Class name '{name}' should be written in CamelCase",
-          "S009": "Function name '{name}' should be written in snake_case"}
+import string
+import sys
 
 
-def check_line_length(code_line):
-    return "S001" if len(code_line) > 79 else None
+def process_file(path):
+    with open(path, 'r') as f:
+        text = f.read()
+
+    empty_lines = 0
+    for i, line in enumerate(text.splitlines()):
+        if len(line) > 79:
+            print(f'{path}: Line {i + 1}: S001 Too long')
+        if (len(line) - len(line.lstrip())) % 4 != 0:
+            print(f'{path}: Line {i + 1}: S002 Wrong indentation')
+        if (line[:line.find('#')] if '#' in line else line).strip().endswith(';'):
+            print(f'{path}: Line {i + 1}: S003 Unnecessary semicolon')
+        if '#' in line and not line.startswith('#') and '  #' not in line:
+            print(f'{path}: Line {i + 1}: S004 Spaces before inline comments')
+        if '#' in line and line.find('#') < line.lower().find('todo'):
+            print(f'{path}: Line {i + 1}: S005 TODO found')
+        if line.strip() == '':
+            empty_lines += 1
+        else:
+            if empty_lines > 2:
+                print(f'{path}: Line {i + 1}: S006 More than two empty lines')
+            empty_lines = 0
+        if line.strip().startswith('def  ') or line.startswith('class  '):
+            print(f'{path}: Line {i + 1}: S007 Many spaces after construct')
+
+    tree = ast.parse(text)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef):
+            class_name = node.name
+            if '_' in class_name or class_name[
+                0] not in string.ascii_uppercase:
+                print(f'{path}: Line {node.lineno}: S008 Class name CamelCase')
+        elif isinstance(node, ast.FunctionDef):
+            function_name = node.name
+            if any(char in string.ascii_uppercase for char in function_name):
+                print(f'{path}: Line {node.lineno}: S009 Function snake_case')
+            for arg in node.args.args:
+                if any(char in string.ascii_uppercase for char in arg.arg):
+                    print(f'{path}: Line {node.lineno}: S010 Arg snake_case')
+                    break
+            for default in node.args.defaults:
+                if isinstance(default, ast.List):
+                    print(f'{path}: Line {node.lineno}: S012 Mutable default')
+                    break
+        elif isinstance(node, ast.Assign):
+            for var in node.targets:
+                if isinstance(var, ast.Name):
+                    if any(char in string.ascii_uppercase for char in var.id):
+                        print(f'{path}: Line {node.lineno}: S011 snake_case')
+                elif isinstance(var, ast.Attribute):
+                    if any(char in string.ascii_uppercase for char in var.attr):
+                        print(f'{path}: Line {node.lineno}: S011 snake_case')
 
 
-def check_indentation(code_line):
-    return "S002" if (len(code_line) - len(code_line.lstrip())) % 4 else None
+def main():
+    if sys.argv[1].endswith('py'):
+        process_file(sys.argv[1])
+    else:
+        for file_name in os.listdir(sys.argv[1]):
+            if file_name.endswith('py'):
+                process_file(os.path.join(sys.argv[1], file_name))
 
 
-def check_semicolon(code_line):
-    in_single = False
-    in_double = False
-    comment = code_line.find("#") if "#" in code_line else len(code_line)
-    semicolon = None
-    for i, char in enumerate(code_line[:comment]):
-        in_single = not in_single if char == "\'" and not in_double else in_single
-        in_double = not in_double if char == "\"" and not in_single else in_double
-        if char == ";" and not in_single and not in_double:
-            semicolon = i
-    return "S003" if semicolon is not None else None  # Returns error for multiple statements, too PEP8:E702
-
-
-def check_inline_comments(code_line):
-    return "S004" if not code_line.startswith("#") and "#" in code_line[1:] and code_line.find("  #") == -1 else None
-
-
-def check_todo(code_line):
-    return "S005" if -1 < code_line.find("#") < code_line.upper().find("TODO") else None
-
-
-def check_name_spacing(code_line):
-    check = re.match(r"(class|def)\s(\s*)", code_line)
-    return ("S007", check[1]) if check and check[2] else None
-
-
-def check_names(code_line):
-    check = re.match(r"^(class|def) +(\w*)", code_line)
-    if check:
-        if check[1] == "class" and not re.match(r"^class +_?_?[A-Z][A-Za-z\d()]*:$", code_line):
-            return "S008", check[2]
-        if check[1] == "def" and not re. match(r"^def +_?_?[a-z][a-z\d_()]*:$", code_line):
-            return "S009", check[2]
-    return None
-
-
-def check_file(path, code):
-    count_blank = 0
-    for c, line in enumerate(code, 1):
-        err_code = []
-        line = line.replace("\n", "")
-        err_code.append(check_line_length(line))
-        err_code.append(check_indentation(line))
-        err_code.append(check_semicolon(line))
-        err_code.append(check_inline_comments(line))
-        err_code.append(check_todo(line))
-        err_code.append("S006" if count_blank > 2 else None)
-        count_blank = count_blank + 1 if line.strip() == "" else 0
-        for err in err_code:
-            print(f"{path}: Line {c}: {err} {errors[err]}") if err else ""
-        err_code = check_name_spacing(line.lstrip())
-        print(f"{path}: Line {c}: {err_code[0]} {errors[err_code[0]].format(construc=err_code[1])}") if err_code else ""
-        err_code = check_names(line.lstrip())
-        print(f"{path}: Line {c}: {err_code[0]} {errors[err_code[0]].format(name=err_code[1])}") if err_code else ""
-
-
-def list_files(path):
-    if os.path.isfile(path) and path[-2:] == "py":
-        code = open(path, "r")
-        check_file(path, code)
-        code.close()
-    elif os.path.isdir(path):
-        file_list = os.listdir(path)
-        for file in file_list:
-            list_files(path + "\\" + file)
-    return
-
-
-
-args = sys.argv
-if len(args) < 2:
-    print("Please enter project file or directory as an argument.")
-else:
-    list_files(args[1])
+if __name__ == '__main__':
+    main()
